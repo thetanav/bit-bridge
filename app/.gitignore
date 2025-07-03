@@ -1,25 +1,19 @@
-# Various IDEs and Editors
-.vscode/
-.idea/
-**/*~
-
-# Mac OSX temporary files
-.DS_Store
-**/.DS_Store
-
-# dfx temporary files
-.dfx/
-
-# generated files
-**/declarations/
-
-# rust
-target/
-
-# frontend code
+# Node
 node_modules/
 dist/
-.svelte-kit/
+assets/
 
-# environment variables
+# DFX
+.dfx/
 .env
+identity.pem
+
+# Rust
+target/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

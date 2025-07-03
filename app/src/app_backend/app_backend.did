@@ -1,0 +1,8 @@
+service : {
+  "get_balance": (principal) -> (nat64) query;
+  "deposit": (nat64) -> (text);
+  "withdraw": (nat64) -> (text);
+  "lend": (nat64) -> (text);
+  "borrow": (nat64) -> (text);
+  "yield_farm": () -> (text);
+}

@@ -1,38 +1,24 @@
 {
   "canisters": {
     "app_backend": {
-      "main": "src/app_backend/main.mo",
-      "type": "motoko"
+      "type": "custom",
+      "candid": "src/app_backend/app_backend.did",
+      "wasm": "src/app_backend/target/wasm32-unknown-unknown/release/app_backend.wasm",
+      "build": "cd src/app_backend && cargo build --target wasm32-unknown-unknown --release"
     },
     "app_frontend": {
-      "dependencies": [
-        "app_backend"
-      ],
-      "source": [
-        "src/app_frontend/assets"
-      ],
+      "dependencies": ["app_backend"],
+      "source": ["src/app_frontend/assets"],
       "type": "assets"
     },
     "internet_identity": {
-      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
-      "frontend": {},
-      "remote": {
-        "id": {
-          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai"
-        }
-      },
       "type": "custom",
-      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz"
+      "wasm": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity_dev.wasm.gz",
+      "candid": "https://github.com/dfinity/internet-identity/releases/latest/download/internet_identity.did",
+      "frontend": {}
     }
   },
   "defaults": {
-    "bitcoin": {
-      "enabled": true,
-      "log_level": "info",
-      "nodes": [
-        "127.0.0.1:18444"
-      ]
-    },
     "build": {
       "args": "",
       "packtool": ""
