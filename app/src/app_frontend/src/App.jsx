@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Dashboard from "./pages/Dashboard";
 import Deposit from "./pages/Deposit";
@@ -10,13 +16,13 @@ import ConnectWallet from "./pages/ConnectWallet";
 import FloatingTokens from "./components/FloatingTokens";
 import { Toaster } from "react-hot-toast";
 import BtcTicker from "./components/BtcTicker";
+import { AuthProvider } from "./context/AuthContext";
 
 function AppContent() {
   const location = useLocation();
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col relative overflow-hidden">
-
       {/* Floating background icons */}
       <FloatingTokens />
 
@@ -30,12 +36,24 @@ function AppContent() {
       <header className="flex items-center justify-between p-6 bg-gray-800 shadow relative z-10">
         <h1 className="text-4xl font-bold">BitFinance</h1>
         <nav className="space-x-6">
-          <Link to="/" className="text-cyan-400 hover:text-white">Dashboard</Link>
-          <Link to="/deposit" className="text-cyan-400 hover:text-white">Deposit</Link>
-          <Link to="/borrow" className="text-cyan-400 hover:text-white">Borrow</Link>
-          <Link to="/farming" className="text-cyan-400 hover:text-white">Farming</Link>
-          <Link to="/history" className="text-cyan-400 hover:text-white">History</Link>
-          <Link to="/connect" className="text-cyan-400 hover:text-white">Connect Wallet</Link>
+          <Link to="/" className="text-cyan-400 hover:text-white">
+            Dashboard
+          </Link>
+          <Link to="/deposit" className="text-cyan-400 hover:text-white">
+            Deposit
+          </Link>
+          <Link to="/borrow" className="text-cyan-400 hover:text-white">
+            Borrow & Lend
+          </Link>
+          <Link to="/farming" className="text-cyan-400 hover:text-white">
+            Farming
+          </Link>
+          <Link to="/history" className="text-cyan-400 hover:text-white">
+            History
+          </Link>
+          <Link to="/connect" className="text-cyan-400 hover:text-white">
+            Connect Wallet
+          </Link>
         </nav>
       </header>
 
@@ -71,9 +89,11 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
   );
 }
 

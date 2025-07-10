@@ -6,15 +6,21 @@ import {
   ArrowDownCircle,
   ArrowUpCircle,
   Gift,
+  User,
+  UserX,
 } from "lucide-react";
 import CountUp from "react-countup";
 import useAppStore from "../store";
 import GlowingOrb from "../components/GlowingOrb";
 import FloatingTokens from "../components/FloatingTokens";
+import { useAuth } from "../context/AuthContext";
+import { useBackend } from "../hooks/useBackend";
 
 function Dashboard() {
   const navigate = useNavigate();
   const { btcBalance, deposits, activeLoans, rewards } = useAppStore();
+  const { isAuthenticated, principal, loading } = useAuth();
+  const { balance, formatBalance, formatPrincipal } = useBackend();
 
   const cardVariants = {
     initial: { opacity: 0, y: 10 },
@@ -23,11 +29,12 @@ function Dashboard() {
 
   const cards = [
     {
-      label: "BTC Balance",
-      value: btcBalance,
+      label: "ICP Balance",
+      value: isAuthenticated ? balance : 0,
       icon: DollarSign,
       gradient: "from-pink-500 via-orange-400 to-yellow-500",
       route: "/",
+      suffix: " sats",
     },
     {
       label: "Deposits",
@@ -35,6 +42,7 @@ function Dashboard() {
       icon: ArrowDownCircle,
       gradient: "from-cyan-400 via-blue-500 to-purple-600",
       route: "/deposit",
+      suffix: "",
     },
     {
       label: "Active Loans",
@@ -42,6 +50,7 @@ function Dashboard() {
       icon: ArrowUpCircle,
       gradient: "from-orange-400 via-pink-500 to-red-500",
       route: "/borrow",
+      suffix: "",
     },
     {
       label: "Rewards",
@@ -49,6 +58,7 @@ function Dashboard() {
       icon: Gift,
       gradient: "from-green-400 via-emerald-500 to-teal-400",
       route: "/farming",
+      suffix: "",
     },
   ];
 
@@ -70,6 +80,40 @@ function Dashboard() {
           Welcome to BitFinance
         </h1>
         <GlowingOrb />
+      </motion.div>
+
+      {/* Authentication Status */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="flex justify-center"
+      >
+        {loading ? (
+          <div className="flex items-center gap-2 px-4 py-2 bg-gray-800/60 rounded-lg">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-cyan-400"></div>
+            <span className="text-gray-300">Loading...</span>
+          </div>
+        ) : isAuthenticated ? (
+          <div className="flex items-center gap-2 px-4 py-2 bg-green-800/60 rounded-lg">
+            <User className="w-4 h-4 text-green-400" />
+            <span className="text-green-400">Connected</span>
+            <span className="text-gray-300">
+              ({formatPrincipal(principal)})
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 px-4 py-2 bg-red-800/60 rounded-lg">
+            <UserX className="w-4 h-4 text-red-400" />
+            <span className="text-red-400">Not Connected</span>
+            <button
+              onClick={() => navigate("/connect")}
+              className="ml-2 px-2 py-1 bg-cyan-500 text-white rounded text-sm hover:bg-cyan-600 transition-colors"
+            >
+              Connect
+            </button>
+          </div>
+        )}
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
@@ -94,10 +138,11 @@ function Dashboard() {
                 <p className="text-3xl font-bold text-white">
                   <CountUp
                     end={card.value}
-                    decimals={4}
+                    decimals={card.suffix === " sats" ? 0 : 4}
                     duration={1.2}
                     separator=","
                   />
+                  {card.suffix}
                 </p>
               </div>
             </div>

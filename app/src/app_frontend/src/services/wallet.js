@@ -1,6 +1,6 @@
 import { HttpAgent } from "@dfinity/agent";
 
-const whitelist = ["your-canister-id"]; // replace with your actual canister ID
+const whitelist = ["uzt4z-lp777-77774-qaabq-cai"]; // replace with your actual canister ID
 
 export const connectPlug = async () => {
   if (window.ic && window.ic.plug) {
